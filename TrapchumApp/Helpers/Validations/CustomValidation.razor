@@ -1,0 +1,14 @@
+﻿@inject Microsoft.Extensions.Localization.IStringLocalizer<CustomValidation> Localizer
+@implements IDisposable
+@if (hasErrors)
+{
+    <div class="alert alert-danger" role="alert">
+        <ul>
+            @foreach (var error in EditContext?.GetValidationMessages()?? [])
+            {
+                <li>@error</li>
+            }
+        </ul>
+    </div>
+}
+

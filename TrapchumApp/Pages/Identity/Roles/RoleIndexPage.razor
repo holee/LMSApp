@@ -1,0 +1,202 @@
+﻿@page "/App/Account/Roles"
+@using Applications.Features.Identity.Roles.Responses
+<PageTitle>Roles</PageTitle>
+@attribute [MustHasPermission(Resources.Roles, Actions.Read)]
+<RadzenTabs RenderMode="TabRenderMode.Server">
+    <Tabs>
+        <RadzenTabsItem Text="Roles" Icon="list">
+            <GridToolbar SearchChanged="@SearchChanged">
+                <LeftChildren>
+                    <RadzenButton Icon="@IconNames.Add"
+                                  ButtonStyle="ButtonStyle.Primary"
+                                  Text="Add Role"
+                                  Click="@AddUserRole"
+                                  Size="ButtonSize.ExtraSmall" />
+                </LeftChildren>
+                <RightChildren>
+                    <div class="rz-p-0 rz-text-align-center">
+                        <RadzenCheckBox Name="InlcudeInActive" @bind-Value="@includeInActive" />
+                        <RadzenLabel Text="Inlcude InActive" Component="InlcudeInActive" class="rz-ms-0" />
+                    </div>
+                </RightChildren>
+            </GridToolbar>
+            <RadzenDataGrid Density="Density.Compact"
+                            GridLines="DataGridGridLines.Both"
+                            Responsive
+                            TItem="RoleDto"
+                            Count="@counts"
+                            AllowPaging="true"
+                            AllowSorting="true"
+                            PageSize="@pageSize"
+                            PagerHorizontalAlign="HorizontalAlign.Right"
+                            PageSizeOptions="@StorageConstant.PageSizeOptions"
+                            PageSizeChanged="@PageSizeChanged"
+                            RowSelect="@OnRowSelected"
+                            LoadData="@LoadRoleData"
+                            CellContextMenu="@OnCellContextMenu"
+                            Data="Roles">
+                <Columns>
+                    <RadzenDataGridColumn Property="Id" Title="#"
+                                          Width="3rem"
+                                          Sortable="false"
+                                          TextAlign="TextAlign.Center"
+                                          Context="r">
+                        <Template>
+                            @(Roles?.ToList().IndexOf(r) + 1)
+                        </Template>
+                    </RadzenDataGridColumn>
+                    <RadzenDataGridColumn Width="8rem" Property="RoleName" Title="Name" />
+                    <RadzenDataGridColumn Property="Description" Title="Description" Sortable="false" />
+                    <RadzenDataGridColumn TextAlign="TextAlign.Center"
+                                          Width="5rem"
+                                          Property="IsActive"
+                                          Title="Status" Context="r" Sortable="false">
+                        <Template>
+                            <RadzenBadge BadgeStyle="@(r.IsActive ? BadgeStyle.Success : BadgeStyle.Danger)"
+                                         Text="@(r.IsActive ? "Active" : "Inactive")" />
+                        </Template>
+                    </RadzenDataGridColumn>
+
+                    <RadzenDataGridColumn Width="3rem"
+                                          TextAlign="TextAlign.Center"
+                                          Property="Id" Title="Action" Context="r" Sortable="false">
+                        <Template>
+                            <RadzenButton Size="ButtonSize.ExtraSmall"
+                                          Icon="more_vert"
+                                          Variant="Variant.Text"
+                                          Click="@((args)=>ShowContextMenu(args,r.Id))" />
+                        </Template>
+                    </RadzenDataGridColumn>
+                </Columns>
+            </RadzenDataGrid>
+        </RadzenTabsItem>
+    </Tabs>
+</RadzenTabs>
+@code {
+    void ShowContextMenu(MouseEventArgs args, string userId)
+    {
+        ContextMenuService.Open(args, ds =>
+    @<RadzenMenu Style="font-size:0.8rem;">
+        <RadzenMenuItem Icon="manage_accounts"
+                        Click="@(()=>ManageRolePermissions(userId))"
+                        Text="Manage Role"
+                        Value="@userId" />
+        <RadzenMenuItem Icon="@IconNames.Edit"
+                        Click="@(()=>UpdateRole(userId))"
+                        Text="Edit Role"
+                        Value="@userId" />
+        @if (_canDeleteRole)
+        {
+            <RadzenMenuItem Icon="delete"
+                            Click="@(()=>DeleteRole(userId))"
+                            Text="Delete Role"
+                            Value="@userId" />
+        }
+    </RadzenMenu>
+
+    );
+    }
+
+
+    async Task AddUserRole()
+    {
+        var options = new DialogOptions
+        {
+            Width = "100vw",
+            ShowClose = true,
+            Resizable = false,
+            Draggable = false
+        };
+        var dia = await DialogService.OpenAsync<RoleCreate>("Add Role", options: options);
+
+        if (dia is bool success && success)
+        {
+            await GetRoles();
+        }
+    }
+
+    async Task UpdateRole(string? roleId)
+    {
+        var options = new DialogOptions
+        {
+            Width = "100vw",
+            ShowClose = true,
+            Resizable = false,
+            Draggable = false
+        };
+        var parameters = new Dictionary<string, object?>
+        {
+            {"RoleId",roleId}
+        };
+        var dia = await DialogService.OpenAsync<UpdateRole>("Update Role", parameters, options: options);
+
+        if (dia is bool success && success)
+        {
+            await GetRoles(_filter);
+        }
+    }
+
+
+    void OnRowSelected(RoleDto arg) { }
+
+    private void OnCellContextMenu(DataGridCellMouseEventArgs<RoleDto> args)
+    {
+        if (args.Data is null) return;
+
+        var items = new List<ContextMenuItem>
+        {
+            new ContextMenuItem
+            {
+                Text = "Manage Role",
+                Icon = "manage_accounts",
+                Value = "1"
+            },
+            new ContextMenuItem
+            {
+                Text = "Edit Role",
+                Icon = "edit",
+                Value = "2"
+            }
+        };
+
+        if (_canDeleteRole)
+        {
+            items.Add(new ContextMenuItem
+            {
+                Text = "Delete Role",
+                Icon = "delete",
+                Value = "3"
+            });
+        }
+
+        ContextMenuService.Open(args, items, (e) =>
+        {
+            ContextMenuService.Close();
+            DoRoleAction(e, args);
+        });
+    }
+
+    private void DoRoleAction(MenuItemEventArgs e, DataGridCellMouseEventArgs<RoleDto> args)
+    {
+        if (args.Data is null) return;
+
+        if (int.TryParse(e.Value?.ToString(), out int value))
+        {
+            if (value == 1)
+            {
+                ManageRolePermissions(args.Data.Id);
+                return;
+            }
+            if (value == 2)
+            {
+                _ = UpdateRole(args.Data.Id);
+                return;
+            }
+            if (value == 3)
+            {
+                _ = DeleteRole(args.Data.Id);
+                return;
+            }
+        }
+    }
+}

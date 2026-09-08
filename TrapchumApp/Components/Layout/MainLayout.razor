@@ -1,0 +1,238 @@
+﻿@using Applications.Extensions.Identity.Policies
+@using Microsoft.AspNetCore.Components.Authorization
+@using Microsoft.AspNetCore.Components.Routing
+@using Microsoft.AspNetCore.Components.Sections
+@using Microsoft.AspNetCore.Components.Web
+@using Radzen.Blazor
+@using TrapchumApp.Components.Comps
+@using TrapchumApp.Components.Toasts
+@using TrapchumApp.Helpers.Constants
+@using TrapchumApp.Services
+@using static Microsoft.AspNetCore.Components.Web.RenderMode
+@inherits LayoutComponentBase
+@inject NavigationManager NavigationManager
+@inject LoadingTrackerService Tracker
+<Toastr />
+<RadzenComponents @rendermode="InteractiveServer" />
+<RadzenProgressBar Visible="@isLoading"
+                   Mode="ProgressBarMode.Indeterminate"
+                   Value="100"
+                   ShowValue="false"
+                   ProgressBarStyle="ProgressBarStyle.Danger"
+                   Style="height: 2px; position: fixed; top: 0; left: 0; width: 100%; z-index: 9999;" />
+<RadzenLayout>
+    <RadzenHeader Style="background: linear-gradient(135deg, var(--rz-success) 0%, #1a7a4a 100%); box-shadow: 0 2px 8px rgba(0,0,0,0.18); padding: 0 1rem;">
+        <RadzenStack Orientation="Orientation.Horizontal"
+                     JustifyContent="JustifyContent.SpaceBetween"
+                     AlignItems="AlignItems.Center"
+                     Gap="0"
+                     Style="height: 56px;">
+            <RadzenStack Orientation="Orientation.Horizontal"
+                         AlignItems="AlignItems.Center"
+                         Gap="8px">
+                <RadzenSidebarToggle Click="@(() => sidebarExpanded = !sidebarExpanded)"
+                                     Style="color: white;" />
+            </RadzenStack>
+            <RadzenStack Orientation="Orientation.Horizontal"
+                         AlignItems="AlignItems.Center"
+                         Gap="12px">
+               
+                <NotificationBell />
+                <TopMenus BranchId="@branchId" IsBranchOpen="true"/>
+                <Profiles />
+            </RadzenStack>
+
+        </RadzenStack>
+    </RadzenHeader>
+    <SectionOutlet SectionName="FabMenu"></SectionOutlet>
+    <RadzenSidebar Responsive="false" Style="width: max-content;">
+        <RadzenPanelMenu DisplayStyle="@(sidebarExpanded ? MenuItemDisplayStyle.IconAndText : MenuItemDisplayStyle.Icon)">
+            <RadzenPanelMenuItem Path="/" Text="សហគ្រាសបញ្ចាំទ្រព្យជុំ" Icon="dashboard" />
+        </RadzenPanelMenu>
+        <RadzenPanelMenu DisplayStyle="@(sidebarExpanded ? MenuItemDisplayStyle.IconAndText : MenuItemDisplayStyle.Icon)"
+                         ShowArrow="sidebarExpanded">
+            <AuthorizeView>
+                <Authorized>
+
+                </Authorized>
+            </AuthorizeView>
+            <AuthorizeView Policy="@Policies.AdminOnly">
+                <Authorized>
+                    <RadzenPanelMenuItem Text="Departments" Icon="auto_awesome">
+                        <RadzenPanelMenuItem Text="Departments List" Path="/App/Department" Icon="list" />
+                    </RadzenPanelMenuItem>
+                </Authorized>
+            </AuthorizeView>
+            <AuthorizeView Policy="@Policies.AccountOnly">
+                <Authorized>
+                    <RadzenPanelMenuItem Text="Bussiness Insight" Icon="dataset">
+                        <RadzenPanelMenuItem Icon="lists" Path="#">
+                            Bussiness Perf.
+                        </RadzenPanelMenuItem>
+                        <RadzenPanelMenuItem Icon="lists" Path="#">
+                            Business Insight
+                        </RadzenPanelMenuItem>
+                    </RadzenPanelMenuItem>
+                </Authorized>
+            </AuthorizeView>
+            <AuthorizeView Policy="@Policies.AdminOnly">
+                <Authorized>
+                    <RadzenPanelMenuItem Text="Branches" Icon="auto_awesome">
+                        <RadzenPanelMenuItem Text="Branches List"
+                                             Icon="color_lens"
+                                             Path="/App/Branches" />
+                    </RadzenPanelMenuItem>
+                </Authorized>
+            </AuthorizeView>
+            <AuthorizeView Policy="@Policies.AccountOnly">
+                <Authorized>
+                    <AccountsItems  BranchId="@branchId" IsBranchOpen="@bState.State" />
+                </Authorized>
+            </AuthorizeView>
+            <AuthorizeView Policy="@Policies.AdminOnly">
+                <Authorized>
+                    <OperatedPerson BranchId="@branchId" />
+                </Authorized>
+            </AuthorizeView>
+            <AuthorizeView>
+                <Authorized>
+                    <RadzenPanelMenuItem Text="Loan Management" Icon="dataset" Visible="@bState.IsAdmin">
+                        <RadzenPanelMenuItem Text="Credit Officer" Icon="switch_account"
+                                             Path="/App/Employees/Credit-Agent" />
+                        <RadzenPanelMenuItem Text="Loan Product" Icon="inventory_2" Path="/App/Loans/Products" />
+                        <RadzenPanelMenuItem Text="Loan Category" Icon="lists" Path="/App/Loans/Categories" />
+                        <RadzenPanelMenuItem Text="Collaterals" Icon="invert_colors"
+                                             Path="/App/Customer/Collaterals" />
+                        <RadzenPanelMenuItem Text="Holidays" Icon="calendar_add_on" Path="/App/Holidays" />
+                        <RadzenPanelMenuItem Text="Change Credit Agent" Icon="@IconNames.SwitchAccount"
+                                             Path="@($"/App/Loans/Disbursments/Credit-Agent/{branchId}/Branches")" />
+                    </RadzenPanelMenuItem>
+
+                    @if (bState.IsAccount && bState.State)
+                    {
+                        <LoanManagementItems BranchId="@branchId"
+                                             BranchState="@bState.State" />
+                    }
+
+                    <RadzenPanelMenuItem Text="Loan Management" Icon="dataset" Visible="@bState.IsCreditAgent">
+                        <RadzenPanelMenuItem Text="Customers" Icon="group"
+                                             Path="@($"/App/Customers/{branchId}/Branches")" />
+                        <RadzenPanelMenuItem Text="Collaterals" Icon="invert_colors"
+                                             Path="/App/Customer/Collaterals" />
+                        <RadzenPanelMenuItem Text="Loan Request" Icon="request_quote"
+                                             Path="@($"/App/Loans/Requests/{branchId}/Branches")" />
+                        <RadzenPanelMenuItem Text="Loans Disbursement" Icon="@IconNames.MoneyBag"
+                                             Path="@($"/App/Loans/Disbursements/{branchId}/Branches")" />
+                        <RadzenPanelMenuItem Text="Notifications"
+                                             Icon="notifications"
+                                             Path="/App/Notifications" />
+                        <RadzenPanelMenuItem Text="Active Customers" Icon="@IconNames.MoneyBag"
+                                             Path="@($"/App/Customers/Loans/{branchId}/Branches")" />
+                        <RadzenPanelMenuItem Text="Guarantors" Icon="contact_page" Path="@($"/App/Customers/Guarantors")" />
+                    </RadzenPanelMenuItem>
+
+                    <RadzenPanelMenuItem Text="Loan Management" Icon="dataset" Visible="@bState.IsBranchManager">
+                        <RadzenPanelMenuItem Text="Loan Request" Icon="request_quote"
+                                             Path="@($"/App/Loans/Requests/{branchId}/Branches")" />
+                        <RadzenPanelMenuItem Text="Loans Disbursement" Icon="@IconNames.MoneyBag"
+                                             Path="@($"/App/Loans/Disbursements/{branchId}/Branches")" />
+                        <RadzenPanelMenuItem Text="Notifications"
+                                             Icon="notifications"
+                                             Path="/App/Notifications" />
+                    </RadzenPanelMenuItem>
+
+                    <RadzenPanelMenuItem Text="Loan Management" Icon="@IconNames.AccountBalance" Visible="@bState.IsManager">
+                        <RadzenPanelMenuItem Text="Loan Request" Icon="request_quote"
+                                             Path="@($"/App/Loans/Managers/Requests/{branchId}/Branches")" />
+                        <RadzenPanelMenuItem Text="Loans Disbursement" Icon="@IconNames.MoneyBag"
+                                             Path="@($"/App/Loans/Managers/Disbursments/{branchId}/Branches")" />
+
+                        <RadzenPanelMenuItem Text="Edit Request" Icon="@IconNames.EditAttributes"
+                                             Path="/App/Loans/Managers/Disbursments/Edit" />
+                    </RadzenPanelMenuItem>
+
+                </Authorized>
+            </AuthorizeView>
+
+            <AuthorizeView Policy="@Policies.AccountOnly">
+                <Authorized>
+
+                  
+                    <ReportsItems IsBranchOpen="@bState.State" />
+                </Authorized>
+            </AuthorizeView>
+            <AuthorizeView Policy="@Policies.AccountOnly">
+                <Authorized>
+                    <CurrencyItems IsBranchOpen="@bState.State" BranchId="@branchId" />
+                </Authorized>
+            </AuthorizeView>
+            <AuthorizeView Policy="@Policies.AdminOnly">
+                <Authorized>
+                    <AdminstrationsItems />
+                </Authorized>
+            </AuthorizeView>
+            <AuthorizeView Policy="@Policies.CEOOnly">
+                <Authorized>
+                    <RadzenPanelMenuItem Text="Audit Trail" Icon="@IconNames.DataProtection">
+                        <RadzenPanelMenuItem Text="Audit" Icon="@IconNames.PolicyAlert" Path="/App/Audit" />
+                    </RadzenPanelMenuItem>
+                </Authorized>
+            </AuthorizeView>
+        </RadzenPanelMenu>
+    </RadzenSidebar>
+    <RadzenBody>
+        <ErrorBoundary @ref="@_errorBoundary">
+            <ChildContent>
+                <main class="page-animate" @key="currentUrl">
+                    @Body
+                </main>
+            </ChildContent>
+            <ErrorContent>
+                <GlobalErrorPage Exception="@context"
+                                 OnRecover="@(() => _errorBoundary.Recover())" />
+            </ErrorContent>
+        </ErrorBoundary>
+    </RadzenBody>
+</RadzenLayout>
+
+@code {
+
+    private string? currentUrl;
+    private bool isLoading;
+    private bool ShowPanel;
+    private Action<bool>? _loadingHandler;
+    private ErrorBoundary _errorBoundary = default!;
+
+    private void TogglePanel() => ShowPanel = !ShowPanel;
+
+    protected override void OnInitialized()
+    {
+        currentUrl = NavigationManager.ToBaseRelativePath(NavigationManager.Uri);
+
+        NavigationManager.LocationChanged += OnLocationChanged;
+
+        _loadingHandler = state =>
+        {
+            isLoading = state;
+
+            InvokeAsync(StateHasChanged);
+        };
+
+        Tracker.OnLoadingChanged += _loadingHandler;
+
+        bState.OnChange += StateHasChanged;
+    }
+
+
+
+
+    private void OnLocationChanged(object? sender, LocationChangedEventArgs e)
+    {
+        currentUrl = NavigationManager.ToBaseRelativePath(e.Location);
+
+        _errorBoundary?.Recover();
+
+        StateHasChanged();
+    }
+
+}

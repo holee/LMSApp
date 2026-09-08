@@ -1,0 +1,9 @@
+<Solution>
+  <Project Path="Application/Application.csproj" />
+  <Project Path="Applications/Applications.csproj" />
+  <Project Path="Domains/Domains.csproj" />
+  <Project Path="Infrastructures/Infrastructures.csproj" />
+  <Project Path="TrapchumApp/TrapchumApp.csproj" />
+  <Project Path="Web.Api/Web.Api.csproj" />
+  <Project Path="Web.UI/Web.UI.csproj" />
+</Solution>

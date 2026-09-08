@@ -1,0 +1,102 @@
+﻿@using Applications.Extensions.Identity.Policies
+@using Microsoft.AspNetCore.Components.Authorization
+@using Microsoft.AspNetCore.Components.Routing
+@using Microsoft.AspNetCore.Components.Sections
+@using Microsoft.AspNetCore.Components.Web
+@using Radzen.Blazor
+@using Web.UI.Components.Comps
+@using Web.UI.Components.Toasts
+@using Web.UI.Helpers.Constants
+@using Web.UI.Services
+@inherits LayoutComponentBase
+@inject NavigationManager NavigationManager
+@inject LoadingTrackerService Tracker
+
+<Toastr />
+<RadzenComponents />
+
+<RadzenProgressBar Visible="@isLoading"
+                   Mode="ProgressBarMode.Indeterminate"
+                   Value="100"
+                   ShowValue="false"
+                   ProgressBarStyle="ProgressBarStyle.Danger"
+                   Style="height: 2px; position: fixed; top: 0; left: 0; width: 100%; z-index: 9999;" />
+
+<RadzenLayout>
+    <RadzenHeader Style="background: linear-gradient(135deg, var(--rz-success) 0%, #1a7a4a 100%); box-shadow: 0 2px 8px rgba(0,0,0,0.18); padding: 0 1rem;">
+        <RadzenStack Orientation="Orientation.Horizontal"
+                     JustifyContent="JustifyContent.SpaceBetween"
+                     AlignItems="AlignItems.Center"
+                     Gap="0"
+                     Style="height: 56px;">
+            <RadzenStack Orientation="Orientation.Horizontal"
+                         AlignItems="AlignItems.Center"
+                         Gap="8px">
+                <RadzenSidebarToggle Click="@(() => sidebarExpanded = !sidebarExpanded)"
+                                     Style="color: white;" />
+            </RadzenStack>
+            <RadzenStack Orientation="Orientation.Horizontal"
+                         AlignItems="AlignItems.Center"
+                         Gap="12px">
+                <NotificationBell />
+                <TopMenus BranchId="@branchId" IsBranchOpen="true" />
+                <Profiles />
+            </RadzenStack>
+        </RadzenStack>
+    </RadzenHeader>
+
+    <SectionOutlet SectionName="FabMenu"></SectionOutlet>
+
+    <RadzenSidebar Responsive="false" Style="width: max-content;">
+        <NavMenu Expanded="@sidebarExpanded" BranchId="@branchId" />
+    </RadzenSidebar>
+
+    <RadzenBody>
+        <ErrorBoundary @ref="_errorBoundary">
+            <ChildContent>
+                <main class="page-animate" @key="currentUrl">
+                    @Body
+                </main>
+            </ChildContent>
+            <ErrorContent>
+                <GlobalErrorPage Exception="@context"
+                                 OnRecover="@(() => _errorBoundary.Recover())" />
+            </ErrorContent>
+        </ErrorBoundary>
+    </RadzenBody>
+</RadzenLayout>
+
+@code {
+    private string? currentUrl;
+    private bool isLoading;
+    private Action<bool>? _loadingHandler;
+    private ErrorBoundary _errorBoundary = default!;
+
+    protected override void OnInitialized()
+    {
+        currentUrl = NavigationManager.ToBaseRelativePath(NavigationManager.Uri);
+
+        NavigationManager.LocationChanged += OnLocationChanged;
+
+        _loadingHandler = state =>
+        {
+            isLoading = state;
+
+            InvokeAsync(StateHasChanged);
+        };
+
+        Tracker.OnLoadingChanged += _loadingHandler;
+
+        bState.OnChange += StateHasChanged;
+    }
+
+    private void OnLocationChanged(object? sender, LocationChangedEventArgs e)
+    {
+        currentUrl = NavigationManager.ToBaseRelativePath(e.Location);
+
+        _errorBoundary?.Recover();
+
+        StateHasChanged();
+    }
+}
+

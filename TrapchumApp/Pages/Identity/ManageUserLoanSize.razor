@@ -1,0 +1,149 @@
+﻿@page "/App/Account/ManageLoanSize"
+@using Applications.Features.Settings.Dto
+<PageTitle>Manage Loan Size</PageTitle>
+@attribute [StreamRendering]
+<RadzenFieldset>
+    <HeaderTemplate>
+        <RadzenStack AlignItems="AlignItems.Center" Gap="0.25rem" Orientation="Orientation.Horizontal">
+            <RadzenIcon class="fa" Icon="@IconNames.Money" Style="font-size:1rem;" /><strong>Loan Size</strong>
+        </RadzenStack>
+    </HeaderTemplate>
+    <ChildContent>
+        <GridToolbar SearchChanged="@SearchTextChanged">
+            <RightChildren>
+                <div class="rz-p-2 rz-text-align-center">
+                    <RadzenCheckBox TValue="bool"
+                                    Change="CheckedChanged"
+                                    Name="isIncludeInActive"
+                                    Value="@isIncludeInActive" />
+                    <RadzenLabel Text="Include In Active" Component="isIncludeInActive" class="rz-ms-2" />
+                </div>
+            </RightChildren>
+        </GridToolbar>
+        <RadzenDataGrid Data="@_loanSizes"
+                        Responsive="true"
+                        Density="Density.Compact"
+                        AllowAlternatingRows="true"
+                        AllowPaging="true"
+                        Count="@_counts"
+                        ColumnWidth="10rem"
+                        AllowSorting="true"
+                        TItem="VUserLoanSizes"
+                        PageSize="@pageSize"
+                        GridLines="DataGridGridLines.Both"
+                        PageSizeChanged="@PageSizeChanged"
+                        PageSizeOptions="@StorageConstant.PageSizeOptions"
+                        PagerHorizontalAlign="HorizontalAlign.Right"
+                        PagerPosition="PagerPosition.Bottom"
+                        ShowPagingSummary="true"
+                        LoadData="@LoadData"
+                        RowRender="@RowRender"
+                        RowSelect="@OnRowSelected"
+                        CellContextMenu="@OnCellContextMenu">
+            <Columns>
+                <RadzenDataGridColumn Title="#"
+                                      Width="3rem"
+                                      Property="@nameof(VUserLoanSizes.Id)">
+                    <Template>
+                        @context.RowIndex
+                    </Template>
+                </RadzenDataGridColumn>
+                <RadzenDataGridColumn Title="Name"
+                                      Property="@nameof(VUserLoanSizes.FullName)">
+                </RadzenDataGridColumn>
+                <RadzenDataGridColumn Title="Min Khr Size"
+                                      TextAlign="TextAlign.Right"
+                                      Context="c"
+                                      Property="@nameof(VUserLoanSizes.MinKhrLoanSize)">
+                    <Template>
+                        @c.MinKhrLoanSize.Format(1)
+                    </Template>
+                </RadzenDataGridColumn>
+                <RadzenDataGridColumn Title="Max Khr Size"
+                                      TextAlign="TextAlign.Right"
+                                      Context="c"
+                                      Property="@nameof(VUserLoanSizes.MaxKhrLoanSize)">
+                    <Template>
+                        @c.MaxKhrLoanSize.Format(1)
+                    </Template>
+                </RadzenDataGridColumn>
+                <RadzenDataGridColumn Title="Min Usd Size"
+                                      TextAlign="TextAlign.Right"
+                                      Context="c"
+                                      Property="@nameof(VUserLoanSizes.MinUsdLoanSize)">
+                    <Template>
+                        @c.MinUsdLoanSize.Format(2)
+                    </Template>
+                </RadzenDataGridColumn>
+                <RadzenDataGridColumn Title="Max Usd Size"
+                                      TextAlign="TextAlign.Right"
+                                      Context="c"
+                                      Property="@nameof(VUserLoanSizes.MaxUsdLoanSize)">
+                    <Template>
+                        @c.MaxUsdLoanSize.Format(2)
+                    </Template>
+                </RadzenDataGridColumn>
+                <RadzenDataGridColumn Title="Status"
+                                      TextAlign="TextAlign.Center"
+                                      Context="c"
+                                      Width="6rem"
+                                      Property="@nameof(VUserLoanSizes.IsActive)">
+                    <Template>
+                        <RadzenBadge BadgeStyle="@(c.IsActive ? BadgeStyle.Success : BadgeStyle.Danger)"
+                                     Text="@(c.IsActive ? "Active" : "Inactive")" />
+                    </Template>
+                </RadzenDataGridColumn>
+                <RadzenDataGridColumn Title="Description"
+                                      TextAlign="TextAlign.Left"
+                                      Context="c"
+                                      Property="@nameof(VUserLoanSizes.Description)">
+                </RadzenDataGridColumn>
+                <RadzenDataGridColumn Title="Action"
+                                      TextAlign="TextAlign.Center"
+                                      Context="c"
+                                      Width="5rem"
+                                      Sortable="false"
+                                      Filterable="false">
+                    <Template>
+                        <RadzenButton Size="ButtonSize.ExtraSmall"
+                                      Variant="Variant.Text"
+                                      Click="@((args) => ShowContextMenu(args, c))"
+                                      Icon="more_vert" />
+                    </Template>
+                </RadzenDataGridColumn>
+            </Columns>
+        </RadzenDataGrid>
+    </ChildContent>
+</RadzenFieldset>
+@code {
+    private void RowRender(RowRenderEventArgs<VUserLoanSizes> args)
+    {
+        if (args.Data is null) return;
+        args.Data.RowIndex = args.Index + 1;
+    }
+
+    private void OnCellContextMenu(DataGridCellMouseEventArgs<VUserLoanSizes> args)
+    {
+        if (args.Data is null) return;
+        OpenContextMenu(args, args.Data);
+    }
+
+    private void ShowContextMenu(MouseEventArgs args, VUserLoanSizes item)
+    {
+        OpenContextMenu(args, item);
+    }
+
+    private void OpenContextMenu(MouseEventArgs args, VUserLoanSizes item)
+    {
+        ContextMenuService.Open(args, ds => @<RadzenMenu Style="font-size:0.8rem;" Click="OnMenuItemClick">
+            <RadzenMenuItem Click="@(async () => await EditLoanSize(item))" Text="Edit" Icon="@IconNames.Edit" />
+            <RadzenMenuItem Click="@(async () => await ToggleActive(item))" Text="@(item.IsActive ? "Deactivate" : "Activate")" Icon="@(item.IsActive ? IconNames.Block : IconNames.Check)" />
+            <RadzenMenuItem Click="@(async () => await DeleteLoanSize(item))" Text="Delete" Icon="@IconNames.Delete" />
+        </RadzenMenu>);
+    }
+
+    private void OnMenuItemClick(MenuItemEventArgs args)
+    {
+        ContextMenuService.Close();
+    }
+}

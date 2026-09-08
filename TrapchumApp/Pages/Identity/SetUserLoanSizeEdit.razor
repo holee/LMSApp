@@ -1,0 +1,136 @@
+<EditForm Model="model" OnValidSubmit="@HandleFormSubmit">
+    <FluentValidationValidator DisableAssemblyScanning="true" />
+    <ValidationSummary />
+    <input type="hidden" @bind="@model.UserRefId" />
+    <input type="hidden" @bind="@model.EditSeq" />
+
+    <RadzenFieldset class="rz-mb-3">
+        <HeaderTemplate>
+            <RadzenStack Orientation="Orientation.Horizontal" Gap="0.25rem" AlignItems="AlignItems.Center">
+                <RadzenIcon Icon="attach_money" /><strong>USD Loan Size</strong>
+            </RadzenStack>
+        </HeaderTemplate>
+        <ChildContent>
+            <RadzenRow class="rz-my-2">
+                <RadzenColumn Size="12" SizeMD="6">
+                    <RadzenFormField Text="Min USD Size" Variant="Variant.Outlined" class="rz-w-100">
+                        <RadzenNumeric @bind-Value="model.MinUsdLoanSize"
+                                       class="rz-w-100"
+                                       Min="0"
+                                       Format="@Defaults.DefaultCurrencyFormat"
+                                       Name="MinUsdLoanSize"
+                                       TextAlign="TextAlign.End"
+                                       ShowUpDown="false" />
+                    </RadzenFormField>
+                    <ValidationMessage For="@(() => model.MinUsdLoanSize)" />
+                </RadzenColumn>
+                <RadzenColumn Size="12" SizeMD="6">
+                    <RadzenFormField Text="Max USD Size" Variant="Variant.Outlined" class="rz-w-100">
+                        <RadzenNumeric @bind-Value="model.MaxUsdLoanSize"
+                                       class="rz-w-100"
+                                       Min="0"
+                                       Format="@Defaults.DefaultCurrencyFormat"
+                                       Name="MaxUsdLoanSize"
+                                       TextAlign="TextAlign.End"
+                                       ShowUpDown="false" />
+                    </RadzenFormField>
+                    <ValidationMessage For="@(() => model.MaxUsdLoanSize)" />
+                </RadzenColumn>
+            </RadzenRow>
+        </ChildContent>
+    </RadzenFieldset>
+
+    <RadzenFieldset class="rz-mb-3">
+        <HeaderTemplate>
+            <RadzenStack Orientation="Orientation.Horizontal" Gap="0.25rem" AlignItems="AlignItems.Center">
+                <RadzenIcon Icon="toll" /><strong>KHR Loan Size</strong>
+            </RadzenStack>
+        </HeaderTemplate>
+        <ChildContent>
+            <RadzenRow class="rz-my-2">
+                <RadzenColumn Size="12" SizeMD="6">
+                    <RadzenFormField Text="Min KHR Size" Variant="Variant.Outlined" class="rz-w-100">
+                        <RadzenNumeric @bind-Value="model.MinKhrLoanSize"
+                                       class="rz-w-100"
+                                       Min="0"
+                                       Format="@Defaults.DefaultCurrencyFormat"
+                                       Name="MinKhrLoanSize"
+                                       TextAlign="TextAlign.End"
+                                       ShowUpDown="false" />
+                    </RadzenFormField>
+                    <ValidationMessage For="@(() => model.MinKhrLoanSize)" />
+                </RadzenColumn>
+                <RadzenColumn Size="12" SizeMD="6">
+                    <RadzenFormField Text="Max KHR Size" Variant="Variant.Outlined" class="rz-w-100">
+                        <RadzenNumeric @bind-Value="model.MaxKhrLoanSize"
+                                       class="rz-w-100"
+                                       Min="0"
+                                       Format="@Defaults.DefaultCurrencyFormat"
+                                       Name="MaxKhrLoanSize"
+                                       TextAlign="TextAlign.End"
+                                       ShowUpDown="false" />
+                    </RadzenFormField>
+                    <ValidationMessage For="@(() => model.MaxKhrLoanSize)" />
+                </RadzenColumn>
+            </RadzenRow>
+        </ChildContent>
+    </RadzenFieldset>
+
+    <RadzenFieldset class="rz-mb-3">
+        <HeaderTemplate>
+            <RadzenStack Orientation="Orientation.Horizontal" Gap="0.25rem" AlignItems="AlignItems.Center">
+                <RadzenIcon Icon="date_range" /><strong>Validity Period</strong>
+            </RadzenStack>
+        </HeaderTemplate>
+        <ChildContent>
+            <RadzenRow class="rz-my-2">
+                <RadzenColumn Size="12" SizeMD="6">
+                    <RadzenFormField Text="Valid From" Variant="Variant.Outlined" class="rz-w-100">
+                        <RadzenDatePicker @bind-Value="model.StartDate"
+                                          class="rz-w-100"
+                                          Name="StartDate"
+                                          Change="StartDateChanged"
+                                          DateFormat="@Defaults.DefaultDateFormat" />
+                    </RadzenFormField>
+                    <ValidationMessage For="@(() => model.StartDate)" />
+                </RadzenColumn>
+                <RadzenColumn Size="12" SizeMD="6">
+                    <RadzenFormField Text="Until" Variant="Variant.Outlined" class="rz-w-100">
+                        <RadzenDatePicker @bind-Value="model.EndDate"
+                                          class="rz-w-100"
+                                          Name="EndDate"
+                                          DateFormat="@Defaults.DefaultDateFormat" />
+                    </RadzenFormField>
+                    <ValidationMessage For="@(() => model.EndDate)" />
+                </RadzenColumn>
+            </RadzenRow>
+            <RadzenRow class="rz-my-2">
+                <RadzenColumn Size="12">
+                    <RadzenFormField Text="Description" Variant="Variant.Outlined" class="rz-w-100">
+                        <RadzenTextArea @bind-Value="model.Description"
+                                        class="rz-w-100"
+                                        Name="Description"
+                                        Rows="3" />
+                    </RadzenFormField>
+                </RadzenColumn>
+            </RadzenRow>
+        </ChildContent>
+    </RadzenFieldset>
+
+    <RadzenStack Orientation="Orientation.Horizontal"
+                 JustifyContent="JustifyContent.End"
+                 AlignItems="AlignItems.Center"
+                 Gap="0.5rem">
+        <RadzenButton Icon="@IconNames.Save"
+                      ButtonType="ButtonType.Submit"
+                      Size="ButtonSize.ExtraSmall"
+                      Text="Save"
+                      ButtonStyle="ButtonStyle.Success" />
+        <RadzenButton Icon="@IconNames.Cancel"
+                      Size="ButtonSize.ExtraSmall"
+                      Text="Cancel"
+                      Click="@(() => DialogService.Close(false))"
+                      ButtonStyle="ButtonStyle.Danger" />
+    </RadzenStack>
+</EditForm>
+

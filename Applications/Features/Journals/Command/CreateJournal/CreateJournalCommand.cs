@@ -1,0 +1,4 @@
+﻿using ErrorOr;
+namespace Applications.Features.Journals.Command.CreateJournal;
+
+public record CreateJournalCommand(JournalTransactionDtoCreate req) : IRequest<ErrorOr<JournalEntry?>>;

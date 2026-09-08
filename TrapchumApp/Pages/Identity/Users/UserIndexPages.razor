@@ -1,0 +1,323 @@
+﻿@page "/App/Account/Users"
+@using Applications.Features.Branches.Dtos
+@attribute [MustHasPermission(Resources.Users, Actions.Read)]
+<PageTitle>Users</PageTitle>
+<Containers Fluid>
+    <RadzenTabs RenderMode="TabRenderMode.Server">
+        <Tabs>
+            <RadzenTabsItem Text="Users" Icon="group">
+                <GridToolbar SearchChanged="@OnUserTextChanges">
+                    <LeftChildren>
+                        <AuthorizeView Policy="@Policies.AdminOnly">
+                            <Authorized>
+                                <RadzenButton Icon="@IconNames.LoginUser"
+                                              ButtonStyle="ButtonStyle.Primary"
+                                              Size="ButtonSize.Small"
+                                              Click="AddUserAccount"
+                                              Text="Add New User" />
+                            </Authorized>
+                        </AuthorizeView>
+                    </LeftChildren>
+                    <RightChildren>
+                        <RadzenDropDown TValue="int"
+                                        TextProperty="@nameof(VBranch.BranchName)"
+                                        ValueProperty="@nameof(VBranch.BranchId)"
+                                        @bind-Value="@selectedBranchId"
+                                        SelectedItemChanged="SelectedBranchChanged"
+                                        Data="@Branches">
+
+                        </RadzenDropDown>
+                    </RightChildren>
+                </GridToolbar>
+                <RadzenDataGrid GridLines="DataGridGridLines.Both"
+                                AllowAlternatingRows
+                                Responsive="true"
+                                AllowSorting="true"
+                                AllowPaging="true"
+                                SelectionMode="DataGridSelectionMode.Single"
+                                Density="Density.Compact"
+                                ColumnWidth="10rem"
+                                Count="@counts"
+                                PageSize="@pageSize"
+                                LoadData="@LoadAllUsers"
+                                ShowPagingSummary="true"
+                                PagerHorizontalAlign="HorizontalAlign.Right"
+                                PageSizeOptions="@StorageConstant.PageSizeOptions"
+                                PageSizeChanged="PageSizeChanged"
+                                Style="height: calc(100vh - 220px); overflow: auto;"
+                                CellContextMenu="@OnCellContextMenu"
+                                TItem="VUser"
+                                Data="@AllUsers">
+                    <Columns>
+                        <RadzenDataGridColumn Width="4rem"
+                                              Property="@(nameof(VUser.Id))" Title="#" Context="u">
+                            <Template>
+                                @(AllUsers?.ToList().IndexOf(u) + 1)
+                            </Template>
+                        </RadzenDataGridColumn>
+                        <RadzenDataGridColumn Property="@(nameof(VUser.UserName))" Title="User Name" />
+                        <RadzenDataGridColumn Property="@(nameof(VUser.Email))" Title="Email" />
+                        <RadzenDataGridColumn Property="@(nameof(VUser.RoleName))" Title="Role" />
+                        <RadzenDataGridColumn Property="@(nameof(VUser.BranchName))" Title="Branch" />
+                        <RadzenDataGridColumn Width="4rem" Sortable="false"
+                                              TextAlign="TextAlign.Center"
+                                              Property="@(nameof(VUser.Id))" Title="Status" Context="u">
+                            <Template>
+                                <RadzenBadge BadgeStyle="@(u.IsActive == true ? BadgeStyle.Success : BadgeStyle.Danger)"
+                                             Text="@(u.IsActive == true ? "Active" : "Inactive")" />
+                            </Template>
+                        </RadzenDataGridColumn>
+                        <RadzenDataGridColumn Width="5rem" Sortable="false"
+                                              TextAlign="TextAlign.Center"
+                                              Property="@(nameof(VUser.Id))" Title="Action" Context="u">
+                            <Template>
+                                <RadzenButton Size="ButtonSize.ExtraSmall"
+                                              Icon="@IconNames.MoreVert"
+                                              Variant="Variant.Text"
+                                              Click="@((args)=>ShowContextMenu(args, u.Id, u.IsActive == true))" />
+                            </Template>
+                        </RadzenDataGridColumn>
+                    </Columns>
+                </RadzenDataGrid>
+            </RadzenTabsItem>
+        </Tabs>
+    </RadzenTabs>
+</Containers>
+
+@code {
+
+    void ShowContextMenu(MouseEventArgs args, string? userId, bool isActive = false)
+    {
+        ContextMenuService.Open(args, ds => @<RadzenMenu Style="font-size:0.8rem;">
+            <RadzenMenuItem Icon="manage_accounts"
+                            Click="@(()=>ManageAccount(userId))"
+                            Text="Manage User"
+                            Visible="@AppState.IsAdmin"
+                            Value="@userId" />
+            <RadzenMenuItem Icon="manage_accounts"
+                            Visible="@AppState.IsAdmin"
+                            Click="@(()=>ManageUserLoanSize(userId))"
+                            Text="Set User Loan Size"
+                            Value="@userId" />
+            <RadzenMenuItem Icon="manage_accounts"
+                            Click="@(()=>ChangAccountPassword(userId))"
+                            Text="Change Password"
+                            Visible="@AppState.IsAdmin"
+                            Value="@userId" />
+            <RadzenMenuItem Icon="@(isActive ? "person_off" : "person")"
+                            Click="@(()=>ToggleUserActive(userId, isActive))"
+                            Text="@(isActive ? "Deactivate" : "Activate")"
+                            Visible="@AppState.IsAdmin"
+                            Disabled="@(!canUpdateUser || userId == authenticatedUserId)"
+                            Value="@userId" />
+            <RadzenMenuItem Icon="delete"
+                            Click="@(()=>DeleteUser(userId))"
+                            Text="Delete User"
+                            Visible="@AppState.IsAdmin"
+                            Disabled="@(!canDeleteUser || userId == authenticatedUserId)"
+                            Value="@userId" />
+        </RadzenMenu>
+    );
+    }
+    async void OnUserTextChanges(string e)
+    {
+        filterText = e ?? string.Empty;
+
+        await LoadAllUsers(string.Empty, filterText);
+    }
+    async Task PageSizeChanged(int size)
+    {
+        pageSize = size;
+        pageIndex = 0;
+        await LoadAllUsers();
+    }
+
+    void MangagePermissions(string? userId)
+    {
+        var redirectUrl = $"/Administrator/Users/{userId}/Permissions";
+
+        RedirectManager.RedirectTo(redirectUrl);
+    }
+
+    async void SelectedTabChanged(int index)
+    {
+        selectedTabIndex = index;
+
+        if (index == 0)
+        {
+            await LoadAllUsers();
+        }
+    }
+
+    void ManageAccount(string? userId)
+    {
+        ContextMenuService.Close();
+
+        if (authenticatedUserId == userId)
+        {
+            NotificationService.Notify(NotificationSeverity.Error, "Not Allow");
+            return;
+        }
+
+        NavigationManager.NavigateTo($"/App/Account/{userId}/Users");
+    }
+
+    async void ManageUserLoanSize(string? userId)
+    {
+        ContextMenuService.Close();
+
+        var options = new DialogOptions { };
+
+        var param = new Dictionary<string, object?>
+        {
+            {"UserId",userId}
+        };
+
+        bool dialogueResult = await DialogService.OpenAsync<SetUserLoanSize>("Loan Size", param!, options);
+
+    }
+
+
+    async void ChangAccountPassword(string? userId)
+    {
+        ContextMenuService.Close();
+
+        var options = new DialogOptions { };
+
+        var param = new Dictionary<string, object?>
+        {
+            {"UserId",userId}
+        };
+
+        bool dialogueResult = await DialogService.OpenAsync<UserChangePassword>("Change Password", param, options);
+
+    }
+
+    
+
+    void Cancel()
+    {
+        selectedTabIndex = 0;
+
+        model = new();
+    }
+
+
+    async Task AddUserAccount()
+    {
+
+        var options = new DialogOptions{};
+
+        var parameters = new Dictionary<string, object?>
+        {
+            {"BranchId",selectedBranchId}
+        };
+        bool? result = await DialogService.OpenAsync<UserCreateModal>("New User", parameters, options: options);
+
+        if (result is not null && result == true)
+        {
+            await LoadAllUsers(filter: filterText);
+        }
+    }
+
+
+    async Task AddManagerAccount() 
+    {
+
+        var options = new DialogOptions
+        {
+            
+        };
+
+        bool? result = await DialogService.OpenAsync<CreateNewUser>("New User",options: options);
+
+        if (result is not null && result == true)
+        {
+            await LoadAllUsers(filter: filterText);
+        }
+    }
+
+    private void OnCellContextMenu(DataGridCellMouseEventArgs<VUser> args)
+    {
+        if (args.Data is null) return;
+
+        ContextMenuService.Open(args, new List<ContextMenuItem>
+        {
+            new ContextMenuItem
+            {
+                Text = "Manage User",
+                Icon = "manage_accounts",
+                Value = "1",
+                Disabled = !AppState.IsAdmin
+            },
+            new ContextMenuItem
+            {
+                Text = "Set User Loan Size",
+                Icon = "manage_accounts",
+                Value = "2",
+                Disabled = !AppState.IsAdmin
+            },
+            new ContextMenuItem
+            {
+                Text = "Change Password",
+                Icon = "manage_accounts",
+                Value = "3",
+                Disabled = !AppState.IsAdmin
+            },
+            new ContextMenuItem
+            {
+                Text = "Delete User",
+                Icon = "delete",
+                Value = "4",
+                Disabled = !canDeleteUser || args.Data.Id == authenticatedUserId
+            },
+            new ContextMenuItem
+            {
+                Text = args.Data.IsActive == true ? "Deactivate" : "Activate",
+                Icon = args.Data.IsActive == true ? "person_off" : "person",
+                Value = "5",
+                Disabled = !canUpdateUser || args.Data.Id == authenticatedUserId
+            }
+        }, (e) =>
+        {
+            ContextMenuService.Close();
+            DoUserAction(e, args);
+        });
+    }
+
+    private void DoUserAction(MenuItemEventArgs e, DataGridCellMouseEventArgs<VUser> args)
+    {
+        if (args.Data is null) return;
+
+        if (int.TryParse(e.Value?.ToString(), out int value))
+        {
+            if (value == 1)
+            {
+                ManageAccount(args.Data.Id);
+                return;
+            }
+            if (value == 2)
+            {
+                ManageUserLoanSize(args.Data.Id);
+                return;
+            }
+            if (value == 3)
+            {
+                ChangAccountPassword(args.Data.Id);
+                return;
+            }
+            if (value == 4)
+            {
+                _ = DeleteUser(args.Data.Id);
+                return;
+            }
+            if (value == 5)
+            {
+                _ = ToggleUserActive(args.Data.Id, args.Data.IsActive == true);
+                return;
+            }
+        }
+    }
+}
+
+

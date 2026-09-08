@@ -1,0 +1,17 @@
+﻿using Applications.Features.Currencies.Responses;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Metadata.Builders;
+
+namespace Infrastructures.DataAccess.Configurations.Currencies;
+
+public class CurrencyViewNoteConfig : IEntityTypeConfiguration<VCurrencyCounter>
+{
+    public void Configure(EntityTypeBuilder<VCurrencyCounter> builder)
+    {
+        builder.ToView("vwGetCurrencyCounter");
+        builder.HasNoKey();
+        builder.Property(p => p.CurrencyValue).HasPrecision(18, 2);
+        builder.Property(p => p.CurrencyName).HasMaxLength(100);
+        builder.HasQueryFilter(x => x.IsActive == true);
+    }
+}
