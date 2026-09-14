@@ -4,26 +4,70 @@
 @using Radzen.Blazor
 @inject NavigationManager NavigationManager
 
-<PageTitle>Access denied</PageTitle>
+<PageTitle>Access Denied - សហគ្រាសបញ្ចាំទ្រព្យជុំ</PageTitle>
 
 <div class="denied-shell">
-    <div class="denied-card">
-        <RadzenIcon Icon="lock_person" />
-        <h1 class="denied-card__title">Access denied</h1>
-        <p class="denied-card__sub">
-            You are signed in, but your account does not have permission to open this page.
-        </p>
+    <!-- Ambient ambient glowing light effects -->
+    <div class="glow-orb glow-orb--amber"></div>
+    <div class="glow-orb glow-orb--emerald"></div>
 
-        @if (!string.IsNullOrWhiteSpace(ReturnUrl))
-        {
-            <p class="denied-card__url">@ReturnUrl</p>
-        }
+    <div class="denied-container">
+        <div class="denied-card">
+            <!-- Top Security Tag -->
+            <div class="denied-header">
+                <div class="security-badge">
+                    <span class="badge-pulse"></span>
+                    <span>HTTP 403 • Restricted Permission</span>
+                </div>
+            </div>
 
-        <div class="denied-card__actions">
-            <RadzenButton Text="Go to dashboard" Icon="home" ButtonStyle="ButtonStyle.Success"
-                          Click="@(() => NavigationManager.NavigateTo("/"))" />
-            <RadzenButton Text="Sign in as another user" Icon="login" ButtonStyle="ButtonStyle.Light"
-                          Click="@(() => NavigationManager.NavigateTo("/App/Account/Login"))" />
+            <!-- Icon Shield Showcase -->
+            <div class="icon-showcase">
+                <div class="icon-aura"></div>
+                <div class="icon-box">
+                    <RadzenIcon Icon="gpp_bad" />
+                </div>
+            </div>
+
+            <!-- Content -->
+            <div class="denied-content">
+                <h1 class="denied-title">Access Denied</h1>
+                <p class="denied-khmer">លោកអ្នកមិនមានសិទ្ធិគ្រប់គ្រាន់ដើម្បីចូលទំព័រនេះទេ</p>
+                <p class="denied-description">
+                    Your authenticated account does not possess the permissions or security policy required to access this resource. If you believe this is in error, please contact your system administrator.
+                </p>
+
+                <!-- Attempted Resource Tag -->
+                @if (!string.IsNullOrWhiteSpace(ReturnUrl))
+                {
+                    <div class="resource-pill">
+                        <div class="resource-pill__label">Requested Resource</div>
+                        <div class="resource-pill__code">
+                            <RadzenIcon Icon="lock" />
+                            <span>@ReturnUrl</span>
+                        </div>
+                    </div>
+                }
+            </div>
+
+            <!-- Actions -->
+            <div class="denied-actions">
+                <button type="button" class="btn-primary-action" @onclick="@(() => NavigationManager.NavigateTo("/"))">
+                    <RadzenIcon Icon="dashboard" />
+                    <span>Return to Dashboard</span>
+                </button>
+
+                <button type="button" class="btn-secondary-action" @onclick="@(() => NavigationManager.NavigateTo("/App/Account/Login"))">
+                    <RadzenIcon Icon="swap_horiz" />
+                    <span>Sign in with another account</span>
+                </button>
+            </div>
+
+            <!-- Footer -->
+            <div class="denied-footer">
+                <RadzenIcon Icon="security" />
+                <span>Loan Management System • Enterprise Access Control</span>
+            </div>
         </div>
     </div>
 </div>

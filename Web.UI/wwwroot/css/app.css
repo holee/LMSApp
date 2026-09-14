@@ -94,7 +94,7 @@ a,
 }
 
 .validation-message {
-  color: red;
+  color: #dc2626 !important;
 }
 
 #blazor-error-ui {
@@ -616,7 +616,7 @@ h1:focus {
 }
 
 .validation-message {
-    color: #e50000;
+    color: #dc2626 !important;
 }
 
 

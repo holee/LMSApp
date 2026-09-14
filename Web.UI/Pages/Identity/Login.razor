@@ -11,56 +11,218 @@
 @inject NavigationManager NavigationManager
 @inject AuthenticationStateProvider _authStateProvider
 
-<PageTitle>Sign in</PageTitle>
+<PageTitle>Sign In - សហគ្រាសបញ្ចាំទ្រព្យជុំ</PageTitle>
 
 <div class="login-shell">
-    <div class="login-card">
-        <div class="login-card__head">
-            <RadzenIcon Icon="account_balance" />
-            <h1 class="login-card__title">សហគ្រាសបញ្ចាំទ្រព្យជុំ</h1>
-            <p class="login-card__sub">Sign in to continue to the Loan Management System</p>
-        </div>
+    <!-- Ambient ambient glowing light effects -->
+    <div class="glow-orb glow-orb--top-left"></div>
+    <div class="glow-orb glow-orb--bottom-right"></div>
 
-        <EditForm Model="_model" OnValidSubmit="SignInAsync" FormName="login">
-            <DataAnnotationsValidator />
+    <div class="login-card-container">
+        <!-- Brand Hero Showcase (Left Side) -->
+        <aside class="hero-showcase">
+            <div class="hero-decorative-grid"></div>
+            <div class="hero-glow"></div>
 
-            <div class="login-field">
-                <label for="login-email">Email</label>
-                <InputText id="login-email" class="login-input" @bind-Value="_model.Email"
-                           autocomplete="username" placeholder="you@example.com" />
-                <ValidationMessage For="@(() => _model.Email)" />
+            <div class="hero-body">
+                <!-- Brand Badge -->
+                <div class="hero-brand">
+                    <div class="hero-brand__icon-wrap">
+                        <RadzenIcon Icon="account_balance" />
+                    </div>
+                    <div class="hero-brand__badge">
+                        <span class="badge-dot"></span>
+                        <span>Enterprise Core</span>
+                    </div>
+                </div>
+
+                <!-- Brand Headings -->
+                <div class="hero-copy">
+                    <h1 class="hero-copy__khmer">សហគ្រាសបញ្ចាំទ្រព្យជុំ</h1>
+                    <div class="hero-copy__en-wrap">
+                        <span class="hero-copy__en">Loan Management System</span>
+                        <span class="hero-copy__chip">v2.0</span>
+                    </div>
+                    <p class="hero-copy__desc">
+                        A modern, high-security platform engineered for collateral appraisal, pawn transactions, and loan lifecycle management.
+                    </p>
+                </div>
+
+                <!-- Feature Highlights -->
+                <div class="hero-features">
+                    <div class="hero-feature">
+                        <div class="hero-feature__icon">
+                            <RadzenIcon Icon="verified_user" />
+                        </div>
+                        <div class="hero-feature__details">
+                            <span class="hero-feature__title">Bank-Grade Protection</span>
+                            <span class="hero-feature__desc">Encrypted communications & granular role access</span>
+                        </div>
+                    </div>
+
+                    <div class="hero-feature">
+                        <div class="hero-feature__icon">
+                            <RadzenIcon Icon="bolt" />
+                        </div>
+                        <div class="hero-feature__details">
+                            <span class="hero-feature__title">Fast Loan Operations</span>
+                            <span class="hero-feature__desc">Streamlined disbursement & schedule computation</span>
+                        </div>
+                    </div>
+
+                    <div class="hero-feature">
+                        <div class="hero-feature__icon">
+                            <RadzenIcon Icon="analytics" />
+                        </div>
+                        <div class="hero-feature__details">
+                            <span class="hero-feature__title">Real-Time Portfolio</span>
+                            <span class="hero-feature__desc">Transparent ledger balance & repayment audits</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Hero Footer System Status -->
+                <div class="hero-status">
+                    <span class="status-indicator">
+                        <span class="status-indicator__dot"></span>
+                        <span class="status-indicator__ping"></span>
+                    </span>
+                    <span class="status-indicator__label">System secure & operational</span>
+                </div>
             </div>
+        </aside>
 
-            <div class="login-field">
-                <label for="login-password">Password</label>
-                <InputText id="login-password" type="password" class="login-input" @bind-Value="_model.Password"
-                           autocomplete="current-password" placeholder="••••••••" />
-                <ValidationMessage For="@(() => _model.Password)" />
+        <!-- Login Form Panel (Right Side) -->
+        <main class="login-form-panel">
+            <div class="form-content">
+                <!-- Mobile Only Compact Brand Header -->
+                <div class="mobile-brand-header">
+                    <div class="mobile-brand-header__icon">
+                        <RadzenIcon Icon="account_balance" />
+                    </div>
+                    <div class="mobile-brand-header__info">
+                        <div class="mobile-brand-header__khmer">សហគ្រាសបញ្ចាំទ្រព្យជុំ</div>
+                        <div class="mobile-brand-header__sub">Loan Management System</div>
+                    </div>
+                </div>
+
+                <!-- Form Header -->
+                <header class="form-header">
+                    <div class="form-header__tag">
+                        <RadzenIcon Icon="admin_panel_settings" />
+                        <span>Staff Authentication</span>
+                    </div>
+                    <h2 class="form-header__title">Welcome back</h2>
+                    <p class="form-header__subtitle">Please enter your verified credentials to continue.</p>
+                </header>
+
+                <EditForm Model="_model" OnValidSubmit="SignInAsync" FormName="login" class="login-form">
+                    <DataAnnotationsValidator />
+
+                    <!-- Error Alert -->
+                    @if (!string.IsNullOrWhiteSpace(_error))
+                    {
+                        <div class="login-alert-error" role="alert">
+                            <div class="login-alert-error__icon">
+                                <RadzenIcon Icon="error_outline" />
+                            </div>
+                            <div class="login-alert-error__body">
+                                <span class="login-alert-error__title">Unable to sign in</span>
+                                <span class="login-alert-error__message">@_error</span>
+                            </div>
+                        </div>
+                    }
+
+                    <!-- Email Field -->
+                    <div class="form-group">
+                        <label for="login-email" class="form-label">
+                            <span>Email address</span>
+                            <span class="form-label__required" aria-hidden="true">*</span>
+                        </label>
+                        <div class="input-control">
+                            <span class="input-control__icon">
+                                <RadzenIcon Icon="mail" />
+                            </span>
+                            <InputText id="login-email"
+                                       class="form-input"
+                                       @bind-Value="_model.Email"
+                                       autocomplete="username"
+                                       placeholder="name@company.com"
+                                       disabled="@_busy" />
+                        </div>
+                        <div class="form-validation-msg">
+                            <ValidationMessage For="@(() => _model.Email)" />
+                        </div>
+                    </div>
+
+                    <!-- Password Field -->
+                    <div class="form-group">
+                        <div class="form-label-row">
+                            <label for="login-password" class="form-label">
+                                <span>Password</span>
+                                <span class="form-label__required" aria-hidden="true">*</span>
+                            </label>
+                        </div>
+                        <div class="input-control">
+                            <span class="input-control__icon">
+                                <RadzenIcon Icon="lock" />
+                            </span>
+                            <InputText id="login-password"
+                                       type="@(_showPassword ? "text" : "password")"
+                                       class="form-input"
+                                       @bind-Value="_model.Password"
+                                       autocomplete="current-password"
+                                       placeholder="••••••••••••"
+                                       disabled="@_busy" />
+                            <button type="button"
+                                    class="input-control__toggle"
+                                    @onclick="() => _showPassword = !_showPassword"
+                                    tabindex="-1"
+                                    aria-label="@(_showPassword ? "Hide password" : "Show password")"
+                                    title="@(_showPassword ? "Hide password" : "Show password")">
+                                <RadzenIcon Icon="@(_showPassword ? "visibility_off" : "visibility")" />
+                            </button>
+                        </div>
+                        <div class="form-validation-msg">
+                            <ValidationMessage For="@(() => _model.Password)" />
+                        </div>
+                    </div>
+
+                    <!-- Remember Me Option -->
+                    <div class="form-options">
+                        <label class="remember-toggle">
+                            <InputCheckbox @bind-Value="_model.RememberMe" class="remember-toggle__checkbox" disabled="@_busy" />
+                            <span class="remember-toggle__label">Keep me signed in</span>
+                        </label>
+                    </div>
+
+                    <!-- Action Button -->
+                    <button type="submit" class="submit-btn" disabled="@_busy">
+                        @if (_busy)
+                        {
+                            <span class="submit-btn__spinner" aria-hidden="true"></span>
+                            <span>Authenticating…</span>
+                        }
+                        else
+                        {
+                            <span>Sign in</span>
+                            <span class="submit-btn__arrow">
+                                <RadzenIcon Icon="arrow_forward" />
+                            </span>
+                        }
+                    </button>
+                </EditForm>
+
+                <!-- Footer -->
+                <footer class="form-footer">
+                    <div class="form-footer__security">
+                        <RadzenIcon Icon="verified" />
+                        <span>Protected by 256-bit SSL encryption</span>
+                    </div>
+                    <p class="form-footer__copyright">&copy; @DateTime.Now.Year LoanMS. All rights reserved.</p>
+                </footer>
             </div>
-
-            <label class="login-remember">
-                <InputCheckbox @bind-Value="_model.RememberMe" />
-                <span>Remember me</span>
-            </label>
-
-            @if (!string.IsNullOrWhiteSpace(_error))
-            {
-                <div class="login-error" role="alert">@_error</div>
-            }
-
-            <button type="submit" class="login-submit" disabled="@_busy">
-                @if (_busy)
-                {
-                    <span>Signing in…</span>
-                }
-                else
-                {
-                    <span>Sign in</span>
-                }
-            </button>
-        </EditForm>
-
-        <div class="login-card__foot">&copy; @DateTime.Now.Year LoanMS</div>
+        </main>
     </div>
 </div>
 
@@ -71,6 +233,7 @@
     private readonly LoginModel _model = new();
     private string? _error;
     private bool _busy;
+    private bool _showPassword;
 
     protected override async Task OnInitializedAsync()
     {
@@ -100,7 +263,7 @@
 
         if (!success)
         {
-            _error = string.IsNullOrWhiteSpace(message) ? "Invalid credentials." : message;
+            _error = string.IsNullOrWhiteSpace(message) ? "Invalid email or password. Please try again." : message;
             return;
         }
 
@@ -112,8 +275,8 @@
 
     private sealed class LoginModel
     {
-        [Required(ErrorMessage = "Email is required.")]
-        [EmailAddress(ErrorMessage = "Enter a valid email address.")]
+        [Required(ErrorMessage = "Email address is required.")]
+        [EmailAddress(ErrorMessage = "Please enter a valid email address.")]
         public string Email { get; set; } = string.Empty;
 
         [Required(ErrorMessage = "Password is required.")]

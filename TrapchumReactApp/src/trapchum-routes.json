@@ -1,0 +1,438 @@
+[
+  {
+    "File": "TrapchumApp\\Components\\Home.razor",
+    "Route": "/Home"
+  },
+  {
+    "File": "TrapchumApp\\Pages\\Create.razor",
+    "Route": "/create-journal"
+  },
+  {
+    "File": "TrapchumApp\\Pages\\Error.razor",
+    "Route": "/Error"
+  },
+  {
+    "File": "TrapchumApp\\Pages\\Home.razor",
+    "Route": "/"
+  },
+  {
+    "File": "TrapchumApp\\Pages\\NotificationPage.razor",
+    "Route": "/App/Notifications"
+  },
+  {
+    "File": "TrapchumApp\\Pages\\Currencies\\CurrenciesIndex.razor",
+    "Route": "/App/Currencies"
+  },
+  {
+    "File": "TrapchumApp\\Pages\\Currencies\\CurrencyDetials.razor",
+    "Route": "/Account/Currencies/{Id:int}"
+  },
+  {
+    "File": "TrapchumApp\\Pages\\Currencies\\NoteList.razor",
+    "Route": "/App/Notes/CurrencyCounter"
+  },
+  {
+    "File": "TrapchumApp\\Pages\\Identity\\ManageUserLoanSize.razor",
+    "Route": "/App/Account/ManageLoanSize"
+  },
+  {
+    "File": "TrapchumApp\\Pages\\Identity\\Permissions.razor",
+    "Route": "/App/Account/Permissions"
+  },
+  {
+    "File": "TrapchumApp\\Pages\\Identity\\SetUserLoanSize.razor",
+    "Route": "/Account/Users/{UserId}/Loan"
+  },
+  {
+    "File": "TrapchumApp\\Pages\\Identity\\Authentications\\AccessDenied.razor",
+    "Route": "/app/access-denied"
+  },
+  {
+    "File": "TrapchumApp\\Pages\\Identity\\Authentications\\Login.razor",
+    "Route": "/Account/Login"
+  },
+  {
+    "File": "TrapchumApp\\Pages\\Identity\\Authentications\\Register.razor",
+    "Route": "/Account/Register"
+  },
+  {
+    "File": "TrapchumApp\\Pages\\Identity\\Roles\\ManageRolePermission.razor",
+    "Route": "/App/Account/Roles/{Id}/Permissions"
+  },
+  {
+    "File": "TrapchumApp\\Pages\\Identity\\Roles\\RoleIndexPage.razor",
+    "Route": "/App/Account/Roles"
+  },
+  {
+    "File": "TrapchumApp\\Pages\\Identity\\Users\\ManageUserProfile.razor",
+    "Route": "/App/Account/Profile/{UserId}/User"
+  },
+  {
+    "File": "TrapchumApp\\Pages\\Identity\\Users\\ManageUserProfile.razor",
+    "Route": "/profile"
+  },
+  {
+    "File": "TrapchumApp\\Pages\\Identity\\Users\\MangeUserRoles.razor",
+    "Route": "/Administrator/Users/{Id:long}/Roles"
+  },
+  {
+    "File": "TrapchumApp\\Pages\\Identity\\Users\\UserIndexPages.razor",
+    "Route": "/App/Account/Users"
+  },
+  {
+    "File": "TrapchumApp\\Pages\\Identity\\Users\\UserManagement.razor",
+    "Route": "/App/Account/{Id}/Users"
+  },
+  {
+    "File": "TrapchumApp\\Pages\\Lists\\Branches\\BranchCreatePage.razor",
+    "Route": "/App/Branches/Create"
+  },
+  {
+    "File": "TrapchumApp\\Pages\\Lists\\Branches\\BranchDetailsPage.razor",
+    "Route": "/App/Branches/Details/{BranchId}"
+  },
+  {
+    "File": "TrapchumApp\\Pages\\Lists\\Branches\\BranchEditPage.razor",
+    "Route": "/App/Branches/Edit/{BranchId}"
+  },
+  {
+    "File": "TrapchumApp\\Pages\\Lists\\Branches\\BranchList.razor",
+    "Route": "/App/Branches"
+  },
+  {
+    "File": "TrapchumApp\\Pages\\Lists\\Collaterals\\CollateralLinesIndex.razor",
+    "Route": "/App/Customer/Collaterals"
+  },
+  {
+    "File": "TrapchumApp\\Pages\\Lists\\CollateralValuations\\CollateralValuationIndex.razor",
+    "Route": "/App/Collaterals/Valuations"
+  },
+  {
+    "File": "TrapchumApp\\Pages\\Lists\\CreditAgents\\AgentIndex.razor",
+    "Route": "/App/Employees/Credit-Agent"
+  },
+  {
+    "File": "TrapchumApp\\Pages\\Lists\\Customers\\CustomerCreate.razor",
+    "Route": "/App/Customers/CreateNew"
+  },
+  {
+    "File": "TrapchumApp\\Pages\\Lists\\Customers\\CustomerDetailsPage.razor",
+    "Route": "/App/Customers/{CustomerId}/Details"
+  },
+  {
+    "File": "TrapchumApp\\Pages\\Lists\\Customers\\CustomersIndex.razor",
+    "Route": "/App/Customers"
+  },
+  {
+    "File": "TrapchumApp\\Pages\\Lists\\Customers\\CustomersIndex.razor",
+    "Route": "/App/Customers/{BranchId:int}/Branches"
+  },
+  {
+    "File": "TrapchumApp\\Pages\\Lists\\Customers\\CustomerUpdatePage.razor",
+    "Route": "/Customers/{CustomerId}/Update"
+  },
+  {
+    "File": "TrapchumApp\\Pages\\Lists\\Departments\\DepartmentIndexPage.razor",
+    "Route": "/App/Department"
+  },
+  {
+    "File": "TrapchumApp\\Pages\\Lists\\Employees\\EmployeeCreatePage.razor",
+    "Route": "/App/Employees/CreateNewUser"
+  },
+  {
+    "File": "TrapchumApp\\Pages\\Lists\\Employees\\EmployeeEditPage.razor",
+    "Route": "/App/Employees/{EmployeeId}/Edit"
+  },
+  {
+    "File": "TrapchumApp\\Pages\\Lists\\Employees\\EmployeesIndex.razor",
+    "Route": "/App/Employees"
+  },
+  {
+    "File": "TrapchumApp\\Pages\\Lists\\Holidays\\HolidayList.razor",
+    "Route": "/App/Holidays"
+  },
+  {
+    "File": "TrapchumApp\\Pages\\Lists\\Holidays\\ImportHoliday.razor",
+    "Route": "/Holidays/import"
+  },
+  {
+    "File": "TrapchumApp\\Pages\\Lists\\Items\\ItemIndexPage.razor",
+    "Route": "/App/Items"
+  },
+  {
+    "File": "TrapchumApp\\Pages\\Lists\\Operations\\Areas\\AreaIndexPage.razor",
+    "Route": "/app/administration/areas"
+  },
+  {
+    "File": "TrapchumApp\\Pages\\Lists\\Operations\\Communes\\CommuneIndex.razor",
+    "Route": "/App/Operation-Area/Communes"
+  },
+  {
+    "File": "TrapchumApp\\Pages\\Lists\\Operations\\Districts\\DistrictIndex.razor",
+    "Route": "/App/Operation-Area/Districts"
+  },
+  {
+    "File": "TrapchumApp\\Pages\\Lists\\Operations\\Provinces\\ProvinceIndex.razor",
+    "Route": "/App/Operation-Area/Provinces"
+  },
+  {
+    "File": "TrapchumApp\\Pages\\Lists\\Operations\\Villages\\VillagesIndex.razor",
+    "Route": "/App/Operation-Area/Villages"
+  },
+  {
+    "File": "TrapchumApp\\Pages\\Lists\\OtherNames\\ConvertToCustomer.razor",
+    "Route": "/App/Names/{Id}/Customer"
+  },
+  {
+    "File": "TrapchumApp\\Pages\\Lists\\OtherNames\\ConvertToEmployee.razor",
+    "Route": "/App/Names/{Id}/Employee"
+  },
+  {
+    "File": "TrapchumApp\\Pages\\Lists\\OtherNames\\ConvertToVendor.razor",
+    "Route": "/App/Names/{Id}/Vendor"
+  },
+  {
+    "File": "TrapchumApp\\Pages\\Lists\\OtherNames\\NamesPageIndex.razor",
+    "Route": "/App/Names"
+  },
+  {
+    "File": "TrapchumApp\\Pages\\Lists\\OtherNames\\Guarantors\\GuarantorDetails.razor",
+    "Route": "/App/Customers/Guarantors/{Id:long}/Details"
+  },
+  {
+    "File": "TrapchumApp\\Pages\\Lists\\OtherNames\\Guarantors\\GuarantorsPage.razor",
+    "Route": "/App/Customers/Guarantors"
+  },
+  {
+    "File": "TrapchumApp\\Pages\\Lists\\Vendors\\VendorCreatePage.razor",
+    "Route": "/App/Vendor/CreateNew"
+  },
+  {
+    "File": "TrapchumApp\\Pages\\Lists\\Vendors\\VendorEditPage.razor",
+    "Route": "/App/Vendors/{Id}/Edit"
+  },
+  {
+    "File": "TrapchumApp\\Pages\\Lists\\Vendors\\VendorIndexPage.razor",
+    "Route": "/App/Vendors"
+  },
+  {
+    "File": "TrapchumApp\\Pages\\Managers\\EditRequestPage.razor",
+    "Route": "/App/Loans/Managers/Disbursments/Edit"
+  },
+  {
+    "File": "TrapchumApp\\Pages\\Managers\\IndexPage.razor",
+    "Route": "/App/Loans/Managers"
+  },
+  {
+    "File": "TrapchumApp\\Pages\\Managers\\ManagerIndexLoanPage.razor",
+    "Route": "/App/Loans/Managers/Disbursments/{BranchId:int}/Branches"
+  },
+  {
+    "File": "TrapchumApp\\Pages\\Managers\\ManagerLoanRequestDetail.razor",
+    "Route": "/App/Loans/Managers/{LoanRequestId}/Requests/{BranchId:int}/Branches/{CustomerId}/Details"
+  },
+  {
+    "File": "TrapchumApp\\Pages\\Managers\\ManagerRequestIndexPage.razor",
+    "Route": "/App/Loans/Managers/Requests/{BranchId:int}/Branches"
+  },
+  {
+    "File": "TrapchumApp\\Pages\\Settings\\AuditTrails.razor",
+    "Route": "/App/Audit"
+  },
+  {
+    "File": "TrapchumApp\\Pages\\Settings\\BlabGridViewExample.razor",
+    "Route": "/App/GridExample"
+  },
+  {
+    "File": "TrapchumApp\\Pages\\Settings\\IncomeExpenseCreate.razor",
+    "Route": "/App/Settings/Income-Expense/Create"
+  },
+  {
+    "File": "TrapchumApp\\Pages\\Settings\\IncomeExpenseDetails.razor",
+    "Route": "/App/Settings/Income-Expense/Details"
+  },
+  {
+    "File": "TrapchumApp\\Pages\\Settings\\IncomeExpenseIndex.razor",
+    "Route": "/App/Settings/Income-Expense"
+  },
+  {
+    "File": "TrapchumApp\\Pages\\Settings\\IndexSetting.razor",
+    "Route": "/App/Settings"
+  },
+  {
+    "File": "TrapchumApp\\Pages\\Settings\\LoanPurposes\\LoanPurposeList.razor",
+    "Route": "/App/Settings/Loan-Purposes"
+  },
+  {
+    "File": "TrapchumApp\\Pages\\Settings\\Occupatiion\\OccupationCreate.razor",
+    "Route": "/App/Setting/occupations/Create"
+  },
+  {
+    "File": "TrapchumApp\\Pages\\Settings\\Occupatiion\\OccupationList.razor",
+    "Route": "/App/Setting/Occupations"
+  },
+  {
+    "File": "TrapchumApp\\Pages\\Settings\\Periods\\PeriodList.razor",
+    "Route": "/App/Settings/Periods"
+  },
+  {
+    "File": "TrapchumApp\\Pages\\Transactions\\Branches\\CashVaultModalActions.razor",
+    "Route": "/App/Branches/{BranchId:int}/CashVault"
+  },
+  {
+    "File": "TrapchumApp\\Pages\\Transactions\\Branches\\OpenBranch.razor",
+    "Route": "/Branches/{BranchId:int?}/OpenBranch"
+  },
+  {
+    "File": "TrapchumApp\\Pages\\Transactions\\Exchanges\\ExchangeCurrencyIndexPage.razor",
+    "Route": "/App/Exchanges/{BranchId:int}/Branches"
+  },
+  {
+    "File": "TrapchumApp\\Pages\\Transactions\\Exchanges\\NbcExchangePage.razor",
+    "Route": "/App/Exchanges/NbcRates"
+  },
+  {
+    "File": "TrapchumApp\\Pages\\Transactions\\Exchanges\\SetDailySpotRate.razor",
+    "Route": "/App/SetDailySpotRates"
+  },
+  {
+    "File": "TrapchumApp\\Pages\\Transactions\\Exchanges\\SpotRate.razor",
+    "Route": "/App/Currencies/SpotRate/{Id:int}"
+  },
+  {
+    "File": "TrapchumApp\\Pages\\Transactions\\Journals\\JournalEntryCreate.razor",
+    "Route": "/app/transactions/journals/create/{BranchId:int}/branches"
+  },
+  {
+    "File": "TrapchumApp\\Pages\\Transactions\\Journals\\JournalEntryUpdatePage.razor",
+    "Route": "/app/transactions/journals/edit/{JournalId}/branches/{BranchId:int}"
+  },
+  {
+    "File": "TrapchumApp\\Pages\\Transactions\\Journals\\JournalIndexPage.razor",
+    "Route": "/App/Account/Journals/{BranchId:int}/Branches"
+  },
+  {
+    "File": "TrapchumApp\\Pages\\Transactions\\Ledgers\\LedgerIndexPage.razor",
+    "Route": "/App/Account/Ledgers/{BranchId:int}/Branches"
+  },
+  {
+    "File": "TrapchumApp\\Pages\\Transactions\\LoanPayoffs\\LoanPayOffPage.razor",
+    "Route": "/app/loans/{LoanId}/branches/{BranchId:int}/loan-payoff"
+  },
+  {
+    "File": "TrapchumApp\\Pages\\Transactions\\LoanRequests\\LoanRequestCreate.razor",
+    "Route": "/App/Loans/Requests/{BranchId:int}/Branches/CreateNew"
+  },
+  {
+    "File": "TrapchumApp\\Pages\\Transactions\\LoanRequests\\LoanRequestCreate.razor",
+    "Route": "/App/Loans/Requests/{BranchId:int}/Branches/CreateNew/{CustomerId}/Customers"
+  },
+  {
+    "File": "TrapchumApp\\Pages\\Transactions\\LoanRequests\\LoanRequestCreateNoCustomer.razor",
+    "Route": "/app/loans/requests/{branchId:int}/branches/create-new-request"
+  },
+  {
+    "File": "TrapchumApp\\Pages\\Transactions\\LoanRequests\\LoanRequestDetail.razor",
+    "Route": "/App/Loans/{LoanRequestId}/Requests/{BranchId:int}/Branches/{CustomerId}/Details"
+  },
+  {
+    "File": "TrapchumApp\\Pages\\Transactions\\LoanRequests\\LoanRequestEditPage.razor",
+    "Route": "/App/Loans/{LoanRequestId}/Requests/{BranchId:int}/Branches/{CustomerId}/Edit"
+  },
+  {
+    "File": "TrapchumApp\\Pages\\Transactions\\LoanRequests\\LoanRequestIndexPage.razor",
+    "Route": "/App/Loans/Requests/{BranchId:int}/Branches"
+  },
+  {
+    "File": "TrapchumApp\\Pages\\Transactions\\Loans\\Disbursements\\CustomersActiveLoanPage.razor",
+    "Route": "/App/Customers/Loans/{BranchId:int}/Branches"
+  },
+  {
+    "File": "TrapchumApp\\Pages\\Transactions\\Loans\\Disbursements\\IndexLoanPage.razor",
+    "Route": "/App/Loans/Disbursements/{BranchId:int}/Branches"
+  },
+  {
+    "File": "TrapchumApp\\Pages\\Transactions\\Loans\\Disbursements\\LoanChangedCreditAgent.razor",
+    "Route": "/App/Loans/{LoanId}/CreditAgents/{CreditAgentId}"
+  },
+  {
+    "File": "TrapchumApp\\Pages\\Transactions\\Loans\\Disbursements\\LoanChangedCreditAgents.razor",
+    "Route": "/App/Loans/Disbursments/Credit-Agent/{BranchId:int}/Branches"
+  },
+  {
+    "File": "TrapchumApp\\Pages\\Transactions\\Loans\\Disbursements\\LoanCreatePage.razor",
+    "Route": "/App/Loans/{LoanRequestId}/Disbursements/{BranchId:int}/Branches/CreateNew"
+  },
+  {
+    "File": "TrapchumApp\\Pages\\Transactions\\Loans\\Disbursements\\LoanDeletePage.razor",
+    "Route": "/App/Loans/{LoanId}/Disbursements/{BranchId:int}/Branches/Delete"
+  },
+  {
+    "File": "TrapchumApp\\Pages\\Transactions\\Loans\\Disbursements\\LoanDetails.razor",
+    "Route": "/App/Loan/{LoanId}/Branches/{BranchId:int}/Currencies/{CurrencyId:int?}"
+  },
+  {
+    "File": "TrapchumApp\\Pages\\Transactions\\Loans\\Disbursements\\LoanEditPage.razor",
+    "Route": "/App/Loans/{LoanId}/Disbursements/{BranchId:int}/Branches/Edit"
+  },
+  {
+    "File": "TrapchumApp\\Pages\\Transactions\\Loans\\Disbursements\\WidthrwalCollateralPage.razor",
+    "Route": "/App/Loans/{LoanId}/WidthrwalCollateral/{BranchId:int}/Branches"
+  },
+  {
+    "File": "TrapchumApp\\Pages\\Transactions\\Loans\\LoanCategoriess\\LoanCategoryIndex.razor",
+    "Route": "/App/Loans/Categories"
+  },
+  {
+    "File": "TrapchumApp\\Pages\\Transactions\\Loans\\LoanProducts\\LoanProductPage.razor",
+    "Route": "/App/Loans/Products"
+  },
+  {
+    "File": "TrapchumApp\\Pages\\Transactions\\Loans\\Repayments\\LateScheduleDetail.razor",
+    "Route": "/app/loans/{LoanId}/late-schedules/{BranchId:int?}/Branches"
+  },
+  {
+    "File": "TrapchumApp\\Pages\\Transactions\\Loans\\Repayments\\PaymentIndex.razor",
+    "Route": "/App/Loans/Schedules/{BranchId:int}/Branches"
+  },
+  {
+    "File": "TrapchumApp\\Pages\\Transactions\\Loans\\Repayments\\PayOffs.razor",
+    "Route": "/App/Loans/{LoanId}/Customer/{CustomerId}/PayOff"
+  },
+  {
+    "File": "TrapchumApp\\Pages\\Transactions\\Loans\\Repayments\\RecievePaymentPage.razor",
+    "Route": "/app/loans/{BranchId:int}/branches/{LoanId}/schedules"
+  },
+  {
+    "File": "TrapchumApp\\Pages\\Transactions\\Loans\\Repayments\\RepaymentMultiple.razor",
+    "Route": "/App/Loans/Repayment/{LoanId}/Multiple"
+  },
+  {
+    "File": "TrapchumApp\\Pages\\Transactions\\Loans\\Repayments\\SchedulesPage.razor",
+    "Route": "/App/Loans/{LoanId}/Branches/{BranchId:int}/Payments"
+  },
+  {
+    "File": "TrapchumApp\\Pages\\Transactions\\Loans\\WriteOffs\\Index.razor",
+    "Route": "/Loans/WriteOff"
+  },
+  {
+    "File": "TrapchumApp\\Pages\\Transactions\\Loans\\WriteOffs\\LoanPayOffPage.razor",
+    "Route": "/App/Loans/Disbursements/{branchId:int}/Pay-Off"
+  },
+  {
+    "File": "TrapchumApp\\Pages\\Transactions\\Loans\\WriteOffs\\LoanWriteOffPage.razor",
+    "Route": "/App/Loans/Disbursements/{BranchId:int}/Write-Off"
+  },
+  {
+    "File": "TrapchumApp\\Pages\\Transactions\\RecievePayements\\BatchPayment.razor",
+    "Route": "/app/loans/{LoanId}/batch-repayment/{BranchId:int}/branches"
+  },
+  {
+    "File": "TrapchumApp\\Pages\\Transactions\\RecievePayements\\CollectionPaymentPage.razor",
+    "Route": "/app/loans/{LoanId}/collection-repayment-schedules/{BranchId:int}/branches"
+  },
+  {
+    "File": "TrapchumApp\\Pages\\Transactions\\RecievePayements\\CollectionPaymentPageTest.razor",
+    "Route": "/app/loans/{LoanId}/collection-repayment/{BranchId:int}/branches"
+  }
+]
