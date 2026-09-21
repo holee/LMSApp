@@ -38,7 +38,9 @@ ScaffoldingReadMe.txt
 
 # dotenv environment variables file
 .env
-
+.vs/
+*.user
+*.suo
 # Others
 ~$*
 *~
